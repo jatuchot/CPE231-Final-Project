@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<title>LAB7 CPE231</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<br>
+<div class="container-fluid">
+<center><h1>LAB7 CPE231 - INSERT INTO PAGE</h1></center>
+
+<form action="./process.php" method="post">
+<div class="card">
+<div class="card-body">
+<div class="form-group">
+    <label for="username">StudentID</label>
+  <input type ="text" class="form-control" placeholder="รหัสนักศึกษา" name="username" required>
+</div>
+
+<div class="form-group">
+    <label for="test">SchoolName</label>
+  <input type ="text" class="form-control" placeholder="ชื่อโรงเรียน" name="test" required>
+</div>
+
+<div class="form-group">
+    <label for="cert">Certificate Level</label>
+    <select class="form-control" name="cert" required>
+      <option selected>กรุณาเลือก 1 ตัวเลือก </option>
+      <option value="Grade12">มัธยมศึกษาปีที่ 6</option>
+      <option value="Ungraduated">ปวช ปีที่ 2</option>
+    </select>
+  </div>
+<div class="form-group">
+    <label for="GPAX">StudentID</label>
+  <input type ="text" class="form-control" placeholder="เกรดเฉลี่ย 6 เทอม" name="gpax" required>
+</div>
+
+<center><button type="submit" class="btn btn-primary mb-2">Submit</button></center>
+
+</form>
+</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+

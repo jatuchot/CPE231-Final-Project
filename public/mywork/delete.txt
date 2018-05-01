@@ -1,0 +1,12 @@
+<?php
+
+$conn = new mysqli("localhost", "root", "xxxxxx", "cpe231");
+if (mysqli_connect_errno()) {
+echo "Failed to connect to MySQL: " .
+mysqli_connect_error();
+}
+mysqli_query($conn,"DELETE FROM school_info  WHERE ID='".$_GET['ID']."'");
+mysqli_close($conn);
+
+echo("Delete data");
+?>
