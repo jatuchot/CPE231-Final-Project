@@ -1,0 +1,85 @@
+<?php
+$i = 0;
+?>
+@extends('layouts.app')
+@section('title','UserInfo Protal')
+
+@section('content')
+   @include('components.title', [
+        "title" => "Show All information",
+        "desc" => "Use for show information of Freshmen Student"
+   ])
+<style>
+.panel-body {
+background:#fbe0e6;
+}
+.table-bordered{
+border: 200px solid #000;
+}
+hr{
+border: 1px solid #ccc;
+}
+
+</style>
+@if ($errors->any())
+          <div class="alert alert-danger" role="alert">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+          </div><br>
+      @endif
+      @if (!empty($success))
+        <div class="alert alert-success" role="alert">
+          <p>{{$success }}</p>
+        </div><br>
+      @endif
+
+<div class ="panel panel-default-lg">
+<div class ="panel panel-heading">Freshmen Table</div>
+<div class ="panel panel-body">
+<table border="1" width="100%" class="table table-bordered table-condensed table-responsive table-striped">
+  <tr>
+     <th > <div align="center">STUDENTID</div></th>
+     <th > <div align="center">NAME</div></th>
+    <th > <div align="center">ชื่อนามสกุล</div></th>   
+    <th > <div align="center">TELEPHONE</div></th>
+    <th > <div align="center">EMAIL</div></th>
+   
+  </tr>
+  <?php 
+  use App\User;
+  use App\StudentInfo;
+  $u = User::orderBy('name','asc')->get();
+  $student = StudentInfo::get();
+  ?>
+  @foreach($u as $a)
+  @foreach($student as $s)
+  @if($s['user_id'] == $a['id'])
+  <tr>
+    <td><center>{{ $a->name }}</center></td>
+    <td><center>{{ $s['Firstname'] }} {{ $s['Lastname'] }}</center></td>
+    <td><center>{{ $s['FirstnameTH'] }} {{ $s['LastnameTH'] }}</center></td>
+    <td><center>{{ $s['phone_num'] }}</center></td>
+    <td><center>{{ $s['Personal_Email'] }}</center></td>
+    <?php $i = $i + 1; ?>
+
+</tr>
+@endif
+@endforeach
+@endforeach
+
+   
+</table>
+<br><hr>
+	<?php 
+		if($i >= 2){
+			echo "Student in our record are " . $i . " person";
+		}
+		else{
+			echo "Student in our record is " . $i . " person";
+		}
+	?>
+</div></div>
+@endsection

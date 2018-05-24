@@ -2,12 +2,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
 <title>CPE231 :: CPERegistration-LoginPage</title>
    <link href="/css/sticky_back.css" rel="stylesheet">
     <link href="/css/login2_back.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/font-awesome/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <style>
@@ -93,8 +94,8 @@ hr {
     <p class="title" style="text-align: left;font-family: cloud;">
       <i class="fa fa-fw fa-star"></i>&nbsp;Sign In
     </p>
-            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}"></div>
-            <input type="text" name="name" value="{{ old('name') }}" placeholder="StudentID" autofocus required/>
+            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}"></div>
+            <input type="text" name="username" value="{{ old('username') }}" placeholder="StudentID" autofocus required/>
       <i class="fa fa-user"></i>
       <input type="password" name="password" placeholder="Password">
       <i class="fa fa-key"></i>
@@ -105,15 +106,14 @@ hr {
     </button>
   
         </form>
-  @if (session('status'))
-    TEST
-  @endif
 
-  @if ($errors->has('email'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('email') }}</strong>
-                </span>
-            @endif
+  @if ($errors->has('username'))
+		<script type="text/javascript">
+		    var print;
+		    print = "{{ $errors->first('username') }}"
+                    swal("Oops..",print,"error");
+  		</script>
+  @endif
 
         <!-- Remind Passowrd -->
 
@@ -129,8 +129,6 @@ hr {
 </div>
 </div>
 </center>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<!--<script src="/js/login2.js"></script>-->
 </body>
 </html>
 

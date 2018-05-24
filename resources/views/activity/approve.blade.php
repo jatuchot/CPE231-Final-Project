@@ -5,17 +5,13 @@ $i = 0;
 @section('title','Activity Portal')
 
 @section('content')
+   <div class="card-header">
    @include('components.title', [
         "title" => "Permition for Activity Page",
         "desc" => "Use for approve activity and deny activity"
    ])
+   </div>
 <style>
-.panel-body {
-background:#fbe0e6;
-}
-.table-bordered{
-border: 200px solid #000;
-}
 hr{
 border: 1px solid #ccc;
 }
@@ -36,10 +32,8 @@ border: 1px solid #ccc;
         </div><br>
       @endif
 
-<div class ="panel panel-default-lg">
-<div class ="panel panel-heading">Activity Info Table</div>
-<div class ="panel panel-body">
-<table border="1" width="100%" class="table table-bordered table-condensed table-responsive table-striped">
+<div class ="card-body">
+<table border="1" width="100%" class="table table-bordered table-condensed table-responsive-sm table-striped">
   <tr>
     <th > <div align="center">No.</div></th>
      <th > <div align="center">ACTIVITY NAME</div></th>
@@ -56,7 +50,6 @@ border: 1px solid #ccc;
   ?>
 
   @foreach($act as $a)
-  @if($a['presidentID'] == Auth::user()->name )
   <tr>
    <td><center>{{ $a['id'] }}</center></td>
     <td><center>{{ $a['activitiesName'] }}</center></td>
@@ -88,7 +81,6 @@ border: 1px solid #ccc;
 </tr>
 <?php
 $i = $i + 1; ?>
-@endif
 @endforeach
 
 

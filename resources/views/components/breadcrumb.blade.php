@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-    <li><a href="{{ url("/") }}"><i class="fa fa-fw fa-home"></i>&nbsp;Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{{ url("/") }}"><i class="fa fa-fw fa-home"></i>&nbsp;Home</a></li>
     @if(!$disable)
         @for($i = 1; $i <= count(Request::segments()); $i++)
             <?php
@@ -12,9 +12,9 @@
                 }
             ?>
             @if($i == count(Request::segments()))
-                <li class="active">{{ $text }}</li>
+                <li class="breadcrumb-item active">{{ $text }}</li>
             @else
-                <li><a href="{{ $url }}">{{ $text }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ $url }}">{{ $text }}</a></li>
             @endif
         @endfor
     @endif

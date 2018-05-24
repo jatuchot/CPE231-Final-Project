@@ -9,10 +9,12 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
 @section('title','Activity Portal')
 
 @section('content')
+<div class="card-header">
    @include('components.title', [
 	"title" => "Create Activity Page",
 	"desc" => "Use for submit activity and delete activity"
    ])
+</div>
 @if ($errors->any())
           <div class="alert alert-danger" role="alert">
           <ul>
@@ -22,19 +24,24 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
           </ul>
           </div><br>
       @endif
-      @if (!empty($success))
-        <div class="alert alert-success" role="alert">
-          <p>{{$success }}</p>
-        </div><br>
+      @if (isset($withSuccess))
+<script>
+	  swal({
+  title: "ส่งข้อมูลเรียบร้อยแล้ว!",
+  text: "Your information has been submitted.",
+  icon: "success",
+  button: "OK! :)",
+});
+</script>
       @endif
-
-				<form class="form-horizontal" method="post" action="{{ url('activity/create') }}">
+<div class="card-body">
+				<form class="form-horizontal" method="post" action="{{ url('activity/store') }}" enctype="multipart/form-data">
 					{{csrf_field()}}
 						<div class="form-group">
 						<div class="col-sm-12">
 
 						<label for="actname">Activity Name :</label>
-						<input id="actname" type="text" class="form-control" name="actname">
+						<input id="actname" type="text" class="form-control" name="actname" required>
 						</div></div>
 
 						<div class="form-group">
@@ -56,41 +63,48 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
                                                 <div class="col-sm-12">
 
                                                 <label for="pactID">President StudentID :</label>
-                                                <input id="pactID" type="text" class="form-control" name="pactID" value="{{ Auth::user()->name }}" readonly>
+                                                <input id="pactID" type="text" class="form-control" name="pactID" value="{{$user->student_id }}" readonly>
                                                 </div></div>
 
 						<div class="form-group">
                                                 <div class="col-sm-12">
 
                                                 <label for="padvisor">Advisor of Activity :</label>
-                                                <input id="padvisor" type="text" class="form-control" name="padvisor">
+                                                <input id="padvisor" type="text" class="form-control" name="padvisor" required>
                                                 </div></div>
 
 						<div class="form-group">
                                                 <div class="col-sm-12">
 
                                                 <label for="hour">Given Hours :</label>
-                                                <input id="hour" type="number" class="form-control" name="hour">
+                                                <input id="hour" type="number" class="form-control" name="hour" required>
                                                 </div></div>
 
 						<div class="form-group">
                                                 <div class="col-sm-12">
 
                                                 <label for="start_form">Start From :</label>
-                                                <input id="start_form" type="date" class="form-control" name="start_from">
+                                                <input id="start_form" type="date" class="form-control" name="start_from" required>
                                                 </div></div>
 
 						<div class="form-group">
                                                 <div class="col-sm-12">
 
                                                 <label for="end_at">End At :</label>
-                                                <input id="end_at" type="date" class="form-control" name="end_at">
+                                                <input id="end_at" type="date" class="form-control" name="end_at" required>
                                                 </div></div>
+						<div class="col-sm-12">
+        <div class="form-group">
+        <label for="file">.PDF File:</label>
+            <input type="file" name="file" id="file" accept=".pdf" class="form-control">
+            <p class="help-block">First row of .PDF file must be header of the file.</p>
+        </div>
+        </div>
 						<center>
 						<button type="submit" action"{{url('/activity/create')}}" class="btn btn-primary">Submit</button>
 						</center><br><br><hr>
 </form>	
-<table border="0" width="100%" class="table table-bordered table-hover table-condensed table-responsive table-striped">
+<table border="0" width="100%" class="table table-bordered table-hover table-condensed table-responsive-sm table-striped">
   <tr>
     <th > <div align="center">No.</div></th>
      <th > <div align="center">ACTIVITY NAME</div></th>
@@ -98,6 +112,7 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
     <th > <div align="center">STUDENTID</div></th>
     <th > <div align="center">ADVISOR</div></th>
     <th > <div align="center">FOR</div></th>
+    <th> <div align="center">FILE</div></th>
     <th > <div align="center">APPROVE STATUS</div></th>
     <th > <div align="center">DELETE?</div></th>
 
@@ -105,9 +120,8 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
   <?php use App\ActivityInfo;
   $act = ActivityInfo::get();
   ?>
-
   @foreach($act as $a)
-  @if($a['presidentID'] == Auth::user()->name )
+  @if($a['presidentID'] == Auth::user()->username )
   <tr>
    <td><center>{{ $a['id'] }}</center></td>
     <td><center>{{ $a['activitiesName'] }}</center></td>
@@ -125,14 +139,21 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
 
     </center></td>
     <td><center>
+    @if($a['PDF_filename'] != "NULL")
+            <a href="http://docs.google.com/gview?url=https://dev.bosscpe30.info/download/pdf/{{ $a['PDF_filename'] }}" target="_blank"><button class="btn btn-success">Download</button></a>
+    @else
+	No
+    @endif
+    </center></td>
+    <td><center>
     @if($a['status'] == "0") Pending
     @elseif($a['status'] == "1") Approved
     @elseif($a['status'] == "2") Ignored @endif
     </center></td>
     <td><center>
-    <form action="/activity/delete/{{ $a['id'] }}" method="post">
+    <form id="delete" action="/activity/delete/{{ $a['id'] }}" method="post">
             {{csrf_field()}}
-            <button type="submit" name="action">GO!</button>
+            <button class="btn btn-primary" id="makesure" onclick="return makeSure();">GO!</button>
     </form>
     </center></td>
 </tr>
@@ -149,6 +170,30 @@ $i = $i + 1; ?>
                         echo "You had created " . $i . " Activity";
                 }
         ?>
+</div>
+<script>
+function makeSure(){
+    swal(
+    {
+        title: "Are you sure?",
+        text: "You will not be able to recover your activity data!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        showLoaderOnConfirm: true,
+        closeOnConfirm: false
+        },
+        function(isConfirm){
+            if(isConfirm) { 
+	        $('#delete').submit();
+		return true;
+            }
+	    return false;
+        }
+    );
+}
+</script>
 @endsection
 @section('footer')
 <script src="/js/bootstrap-datepicker.js"></script>

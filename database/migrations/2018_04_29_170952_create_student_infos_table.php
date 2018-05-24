@@ -16,18 +16,20 @@ class CreateStudentInfosTable extends Migration
         Schema::create('student_info', function (Blueprint $table) {
             $table->increments('id');
 	    $table->integer('user_id')->unsigned()->nullable()->default(NULL);
-	    $table->foreign('user_id')->unique()->references('id')->on('users');
+            $table->foreign('user_id')->unique()->references('id')->on('users');
+	    $table->string('student_id',11)->unique();
 	    $table->string('Identification_Number');
-	    $table->string('Firstname');
-	    $table->string('Lastname');
-	    $table->string('FirstnameTH');
-	    $table->string('LastnameTH');
+	    $table->string('Firstname',32);
+	    $table->string('Lastname',32);
+	    $table->string('FirstnameTH',32);
+	    $table->string('LastnameTH',32);
 	    $table->string('gender',1);
 	    $table->string('address',555);
 	    $table->string('phone_num', 20);
-	    $table->string('Personal_Email');
-	    $table->string('Kmutt_Email');
+	    $table->string('Personal_Email',64);
+	    $table->string('Kmutt_Email',64);
 	    $table->date('DOB');
+	    $table->string('image_filename')->nullable();
             $table->timestamps();
         });
     }

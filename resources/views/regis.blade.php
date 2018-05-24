@@ -1,5 +1,6 @@
 <?php
 $curUser = Auth::user()->id;
+$username = Auth::user()->username;
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,6 +25,11 @@ div{
 <body>
 <br>
 <div class="row">
+<div class="col-md-10 col-md-offset-1">
+<div class="progress">
+  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width: 20%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">20% : You need to insert profile_data </div>
+  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width: 80%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">80% : more to go </div>
+</div></div>
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-success">
 <div class="panel panel-heading">
@@ -33,24 +39,29 @@ div{
 </div>
 <div class="panel panel-body">
 
-<form class="form-horizontal" action = "insertinfo.php" method="post">
-identification_number: <input type= "text" class="form-control" name="identification_number"><br>
-USER_ID: <input type= "text" class="form-control" name="id" value="{{ $curUser }}" readonly><br>
-Firstname <input type="text" class="form-control" name="Firstname"><br>
-Lastname: <input type="text" class="form-control" name="Lastname"><br>
-FirstnameTH: <input type="text" class="form-control" name="FirstnameTH"><br>
-LastnameTH: <input type="text" class="form-control" name="LastnameTH"><br>
-gender: <input type ="text" class="form-control" name="gender"><br>
-address: <input type="text" class="form-control" name="address"><br>
-Personal_Email: <input type="email" class="form-control" name="Personal_Email"><br>
-Kmutt_Email: <input type="email" class="form-control" name="Kmutt_Email"><br>
-phone_num: <input type="tel" class="form-control" name="phone_num"><br>
-DOB: <input type="date" class="form-control" name="DOB"><br>
-<br>
+<form class="form-horizontal" action = "/insertinfo.php" method="post">
+StudentID:<input type="text" class="form-control" name="sid" value="{{ $username }}" readonly>
+Identification Number: <input type= "text" class="form-control" name="identification_number">
+USER ID: <input type= "text" class="form-control" name="id" value="{{ $curUser }}" readonly>
+Firstname <input type="text" class="form-control" name="Firstname">
+Lastname: <input type="text" class="form-control" name="Lastname">
+ชื่อจริง: <input type="text" class="form-control" name="FirstnameTH">
+นามสกุล: <input type="text" class="form-control" name="LastnameTH">
+Gender: <select class="form-control" name="gender">
+	<option value="" disabled="disabled"selected>Options</option>
+	<option value="M">M</option>
+	<option value="F">F</option>
+	</select>
+Address: <input type="text" class="form-control" name="address">
+Personal Email: <input type="email" class="form-control" name="Personal_Email">
+Kmutt Email: <input type="email" class="form-control" name="Kmutt_Email">
+Phone Number: <input type="tel" class="form-control" name="phone_num">
+Date of Birth: <input type="date" class="form-control" name="DOB">
 <center><button type="submit" class="btn btn-primary">Submit</button></center>
 </div>
 </div>
 </div>
+</form>
 </body>
 </html>
 

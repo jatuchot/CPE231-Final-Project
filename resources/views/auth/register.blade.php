@@ -115,14 +115,13 @@ hr {
 
 <form method="POST" action="{{ route('register') }}">
     <input type="hidden" name="_token" value="{{csrf_token()}}">                    
-
     <div class="container">
       <h1>Sign Up</h1>
       <p>Please fill in this form to create an account.</p>
       <hr>
 	
       <label for="name"><b>Username</b></label>
-      <input id="name" type="number" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" placeholder="Enter StudentID" required autofocus>
+      <input id="username" type="number" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="Enter StudentID" required autofocus>
 
       <label for="email"><b>Email</b></label>
       <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="Enter Email" required>

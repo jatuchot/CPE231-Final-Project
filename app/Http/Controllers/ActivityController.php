@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\ActivityInfo;
 use App\StudentInfo;
+use Storage;
+
 class ActivityController extends Controller
 {
     /**
@@ -42,43 +44,57 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-	$this->validate(request(), [
-	  'actname' => 'required',
-          'pact' => 'required',
-          'pactID' => 'required|numeric',
-          'padvisor' => 'required',
-          'start_from' => 'required',
-          'end_at' => 'required',
-          'participant' => 'required',
-          'hour' => 'required|numeric'
-        ]);
-
-	$pact = $request->input('pact');
-        $pactid = $request->input('pactID');
-        $pad = $request->input('padvisor');
+        $pact = $request->input('pact');
+        $pactID = $request->input('pactID');
+        $advisor = $request->input('padvisor');
         $start = $request->input('start_from');
-	$end = $request->input('end_at');
+        $end = $request->input('end_at');
         $part = $request->input('participant');
         $hour = $request->input('hour');
         $actname = $request->input('actname');
-	$partimplode = implode(',', $part);
-	$input = $request->except('participant');
-	$input['participant'] = $part;
-	foreach($input['participant'] as $i){
-	$act = ActivityInfo::firstOrCreate([
-		'activitiesName' => $actname,
-		'participant' => $i,
-		'presidentAct' => $pact,
-		'presidentID' => $pactid,
-		'advisor' => $pad,
-		'amountHours' => $hour,
-		'startFrom' => $start,
-		'endAt' => $end
-	]);
+	$name = $pactID . "-" . $pact . "-request.pdf" ;
+        $partimplode = implode(',', $part);
+        $input = $request->except('participant');
+        $input['participant'] = $part;
+        if($request->hasFile('file')) {
+            $file = $request->file("file");
+            $name = $pactID . "-" . $actname . "-request.pdf" ;
+            $file = $file->move(storage_path('app/uploads/activity-pdf'), $name);
+            $actFile = $name;
+            foreach($input['participant'] as $i){
+            $act = ActivityInfo::firstOrCreate([
+            	'activitiesName' => $actname,
+            	'participant' => $i,
+            	'presidentAct' => $pact,
+            	'presidentID' => $pactID,
+            	'advisor' => $advisor,
+            	'amountHours' => $hour,
+            	'startFrom' => $start,
+            	'endAt' => $end,
+		'PDF_filename' => $actFile
+            ]);
+	    }
+	    return view('activity.create' ,[
+                'withSuccess' =>true,
+                'PDFuploaded' => $actFile
+            ]);
+        }
+	else{
+		foreach($input['participant'] as $i){
+            	$act = ActivityInfo::firstOrCreate([
+                'activitiesName' => $actname,
+                'participant' => $i,
+                'presidentAct' => $pact,
+                'presidentID' => $pactID,
+                'advisor' => $advisor,
+                'amountHours' => $hour,
+                'startFrom' => $start,
+                'endAt' => $end
+            ]);
+            }
+	   return view('activity.create', [ 'withSuccess' => true ]);
 	}
-	return view('activity.create')->with('success', 'Activity has been created waiting for approve');
     }
-
 
     /**
      * Display the specified resource.

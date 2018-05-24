@@ -52,6 +52,9 @@ a, a:hover, a:focus {
 }
 
 #sidebar {
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: hidden;
     min-width: 250px;
     max-width: 250px;
     background: #f48fb1; 
@@ -199,6 +202,9 @@ a.article, a.article:hover {
 ----------------------------------------------------- */
 @media (max-width: 768px) {
     #sidebar {
+	overflow: scroll;
+    	overflow-x: hidden;
+    	overflow-y: hidden;
         margin-left: -250px;
         transform: rotateY(90deg);
     }

@@ -1,0 +1,14 @@
+.breadcrumb {
+  margin-bottom: 0;
+  width: 100%;
+  background-color: #fc8ba6; 
+}
+.breadcrumb > li.active {
+    color: black;
+}
+.breadcrumb > li.active > a{
+    color: white;
+}
+.breadcrumb > li{
+    color:white;
+}

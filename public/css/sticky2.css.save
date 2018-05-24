@@ -1,0 +1,39 @@
+body > .container{
+padding-top: 80px;
+}
+
+@media only screen and (max-width: 640px){
+  body > .container{
+    padding-top: 120px;
+}
+}
+}
+.footer {
+  position: fixed;
+  text-align: center;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  font-size: 15px;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #c48fc2;
+}
+
+@media only screen and (max-width: 813px) {
+.footer {
+  position: fixed;
+  text-align: center;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #c48fc2;
+}
+}
+
+
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+
+		<link rel="stylesheet" type="text/css" href="./projectDatabase/css/vendor.css">
+
+	</title>
+</head>
+
+<body background="images/stock_market.jpg" text="white">
+
+
+
+	<center><h1>STOCK TRADING</h1></center>
+
+	<form action="add_transaction.php" method="post">
+
+
+		<!--Transaction Number:<br>
+		<input type="text" name="Transaction_Number" min="1"> <br><br>-->
+
+		<!-- Account ID.:<br>
+		<input type="text" name="Account_ID" min="1"> <br><br>-->
+ <center><p> TRANSACTION </p></center>
+   <center><table border ="3"></center>
+      <tr>
+          <td>Transaction Date:</td>
+          <td><input type="date" name="T_Date"></td>
+
+      </tr>
+      <tr>
+          <td>Tranfer Account:</td>
+          <td><input type="text" name="Tranfer_Account"></td>
+
+      </tr>
+      <tr>
+          <td>Receive Account:</td>
+          <td><input type="text" name="Receive_Account"></td>
+
+      </tr>
+	   <tr>
+          <td>Transaction Type:</td>
+          <td><select name="Transaction_Type">
+		<option value="Withdraw">Withdraw</option><option value="Deposite">Deposite</option></td>
+      </tr>
+
+	  <tr>
+          <td>Transaction Amount:</td>
+          <td><input type="text" name="Transaction_Amount"></td>
+
+      </tr>
+
+	  <tr>
+          <td>Fee:</td>
+          <td><input type="text" name="Fee" ></td>
+
+      </tr>
+	  <tr>
+          <td>Transaction Status:</td>
+          <td><input type="text" name="T_Status"></td>
+
+      </tr>
+
+     </table><br><br>
+
+    <center><button type="submit">SUBMIT</button></center>
+</body>
+</html>
