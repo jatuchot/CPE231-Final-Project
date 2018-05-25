@@ -1,6 +1,3 @@
-<?php
-$i = 0;
-?>
 @extends('layouts.app')
 @section('title','Enrollment Portal')
 
@@ -47,6 +44,7 @@ border: 1px solid #ccc;
 <table border="0" width="100%" class="table table-bordered table-responsive-sm table-striped">
 <thead>
   <tr style="background-color: #f8afc1;">
+	<th > <div align="center">NO</div></th>
      <th > <div align="center">SUBJECTID</div></th>
      <th > <div align="center">SUBJECTNAME</div></th>
     <th > <div align="center">FOR</div></th>   
@@ -60,19 +58,14 @@ border: 1px solid #ccc;
   </tr>
 </thead>
   <?php 
-  $servername = "localhost";
-  $username = "kirei";
-  $password = "5554764s";
-  $dbname = "project";
-  $link = mysqli_connect($servername,$username,$password,$dbname);
-  mysqli_set_charset($link, "utf8");
-  $sq1 = "SELECT si.* , sd.* , s.* FROM subject_info si,subject_dates sd, subject s WHERE si.subject_id = s.subject_id AND s.date_id = sd.id";
-  $result = mysqli_query($link,$sq1);
-
-  while($a = mysqli_fetch_assoc($result)){
+  $i = 1;
+  use App\SubjectInfo;
+  $course = SubjectInfo::get();
   ?>
+@foreach($course as $a)
 <tbody id="course">
   <tr>
+    <td><center>{{ $i }}</center></td>
     <td><center>{{ $a['subject_id'] }}</center></td>
     <td><center>{{ $a['subject_name'] }}</center></td>
     <td><center>
@@ -92,8 +85,8 @@ border: 1px solid #ccc;
 </tr>
 <?php
    $i = $i + 1;
-}
 ?>
+@endforeach
 </tbody>
 </table>
 <br><hr>

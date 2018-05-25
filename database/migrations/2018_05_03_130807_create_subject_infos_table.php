@@ -14,10 +14,16 @@ class CreateSubjectInfosTable extends Migration
     public function up()
     {
         Schema::create('subject_info', function (Blueprint $table) {
+	    $table->increments('id');
             $table->string('subject_id');
 	    $table->string('subject_name');
 	    $table->integer('credit');
-	    $table->primary('subject_id');
+	    $table->integer('foryear');
+	    $table->string('day');
+	    $table->time('start_from');
+	    $table->time('end_at');
+	    $table->string('roomid');
+	    $table->string('instructor');
         });
     }
 

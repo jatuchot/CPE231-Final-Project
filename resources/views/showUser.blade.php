@@ -32,7 +32,8 @@ border: 1px solid #ccc;
         </div><br>
       @endif
 <div class="card-body">
-<table border="0" width="100%" class="table table-bordered table-responsive-sm table-striped">
+<div class="table-responsive">
+<table border="0" width="100%" class="table table-bordered table-striped">
   <tr>
      <th > <div align="center">STUDENTID</div></th>
      <th > <div align="center">NAME</div></th>
@@ -65,7 +66,7 @@ border: 1px solid #ccc;
 
    
 </table>
-<br><hr>
+</div><br><hr>
 	<?php 
 		if($i >= 2){
 			echo "Student in our record are " . $i . " person";

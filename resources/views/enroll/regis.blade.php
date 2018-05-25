@@ -1,4 +1,5 @@
 <?php
+
 $i = 0;
 ?>
 @extends('layouts.app')
@@ -11,25 +12,55 @@ $i = 0;
         "desc" => "Use for enrollment the course"
    ])
    </div>
-
+@if(session('success'))
+<script>
+          swal({
+  title: "ส่งข้อมูลเรียบร้อยแล้ว!",
+  text: "Your information has been submitted.",
+  icon: "success",
+  button: "OK! :)",
+});
+</script>
+@endif
 <style>
 hr{
 border: 1px solid #ccc;
 }
 </style>
 <?php
-$curUser = Auth::user()->role;
-$subject = DB::table('subject')
+$curUser = Auth::user();
+$user = App\StudentInfo::where('user_id','=',$curUser->id)->first();
+/* $subject = DB::table('subject')
 		->join('subject_dates','subject.date_id','=', 'subject_dates.id')
 		->join('subject_info','subject.subject_id','=', 'subject_info.subject_id')
 		->select('subject.*','subject_info.*','subject_dates.*')
 		->where('foryear','=',$curUser)
 		->get();
+*/
+$subject = DB::table('subject_info')
+		->whereNotExists(function ($query) {
+			$query->select(DB::raw(1))
+				->from('enrollments')
+				->whereRaw('enrollments.subjectid = subject_info.id');
+		})
+		->where('foryear','=',$curUser->role)
+		->get();
+
+$check = DB::table('enrollments')
+		->join('student_info','enrollments.studentid','=','student_info.user_id')
+		->join('subject_info','enrollments.subjectid','=','subject_info.id')
+		->select('subject_info.*')
+		->where('user_id','=',$user->id)
+		->get();
 ?>
+
 <div class="card-body">
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">Add Course</button>
+<label>In this semester you can select only the course below.</label>
+<!-- Modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">Add Course</button>
+<hr>
 <div class="modal fade" id="add" role="dialog" >
-  <div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">  
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="add">Add New Course</h5>
@@ -38,54 +69,33 @@ $subject = DB::table('subject')
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="courseid" class="col-form-label">CourseID:</label>
-	    <select class="form-control" id="subject_id">
-	    <option value="/enroll/regis">โปรดเลือก</option>
-	    @foreach($subject as $s)
-	    <option value="{{ $s->subject_id }}">
-		{{ $s->id }} - {{ $s->subject_id }} | {{ $s->instructor }} For :
-			@if($s->foryear == 1) First Year
-			@elseif($s->foryear == 2) Second Year
-			@elseif($s->foryear == 3) Third Year
-			@endif
-			{{ $s->day }}
-			({{ date('H:i',strtotime($s->start_from)) }} - {{ date('H:i',strtotime($s->end_at)) }}) Room : {{ $s->roomid }}
-            @endforeach
-	    </option>
-          </div>
-        </form>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
-      </div>
-    </div>
-
-  </div>
-</div>
--->
-<table class="table table-bordered table-responsive-sm">
+        <label>In this semester you can select only the course below.</label>
+        <form method="POST" action="/enroll/regis/{{ $user->user_id }}" enctype="multipart/form-data">
+	{{csrf_field()}}
+          <div class="form-group" id="boss">
+	    <table class="table table-bordered table-responsive-sm">
 <thead>
 <tr>
+  <th>No</th>
   <th>Subject ID</th>
   <th>Subject Name</th>
   <th>Date</th>
   <th>Time</th>
   <th>Room</th>
+  <th>Add?</th>
 </tr>
 </thead>
 
 <tbody>
-  @foreach($subject as $s1)
+  @foreach($subject as $s2)
   <tr>
-  <td>{{ $s1->subject_id }}</td>
-  <td>{{ $s1->subject_name }}</td>
-  <td>{{ $s1->day }}</td>
-  <td>{{ $s1->start_from }} - {{ $s1->end_at }}</td>
-  <td>{{ $s1->roomid }}</td>
+  <td>{{ $s2->id }} </td>
+  <td>{{ $s2->subject_id }}</td>
+  <td>{{ $s2->subject_name }} (credit: {{ $s2->credit }})</td>
+  <td>{{ $s2->day }}</td>
+  <td>{{ date('H:i',strtotime($s2->start_from)) }}-{{ date('H:i',strtotime($s2->end_at)) }}</td>
+  <td>{{ $s2->roomid }}</td>
+  <td><input id="check" name="subject_id[]" type="checkbox" value="{{ $s2->id }}"></td>
   </tr>
   @endforeach
 
@@ -94,12 +104,62 @@ $subject = DB::table('subject')
 
 
 </table>
+</div>
+</div>
+      <div class="modal-footer">
+	<center>
+	<button type="submit" class="btn btn-success">Send</button>
+	</center>
+	</form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <hr>
-<hr>
+<table class="table table-bordered table-responsive-sm">
+<thead>
+<tr>
+  <th>No</th>
+  <th>Subject ID</th>
+  <th>Subject Name</th>
+  <th>Date</th>
+  <th>Time</th>
+  <th>Room</th>
+</tr>
+</thead>
+<tbody>
+@foreach($check as $s1)
+  <tr>
+  <td>{{ $s1->id }} </td>
+  <td>{{ $s1->subject_id }}</td>
+  <td>{{ $s1->subject_name }} (credit: {{ $s1->credit }})</td>
+  <td>{{ $s1->day }}</td>
+  <td>{{ date('H:i',strtotime($s1->start_from)) }}-{{ date('H:i',strtotime($s1->end_at)) }}</td>
+  <td>{{ $s1->roomid }}</td>
+  </tr>
+  @endforeach
+</tbody>
+</table>
 <br>
 <p>
-<button> Accept </button>
 </p>
 </div>
+<script>
+/*
+function print(){
+	var x = document.forms[0];
+	var i = 0;
+	var j = "";
+	for(i = 0; i < x.length;i++){
+	    if(x[i].checked){
+		j = j + x[i].value;
+	    }
+	}
+	document.getElementById("printTable").innerHTML = j + ","; 
+	console.log(j);
+	$('#add').modal('hide');
+}*/
+</script>
 @endsection
+

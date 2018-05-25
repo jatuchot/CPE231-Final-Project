@@ -1,13 +1,13 @@
 .push {
-  height: 80px;
+  height: 20px;
 }
 body > .container{
-padding-top: 80px;
+padding-top: 20px;
 }
 
 @media only screen and (max-width: 360px){
   body > .container{
-    padding-top: 120px;
+    padding-top: 30px;
 }
 
 }

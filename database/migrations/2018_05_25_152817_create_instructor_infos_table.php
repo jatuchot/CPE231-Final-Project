@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEnrollmentsTable extends Migration
+class CreateInstructorInfosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateEnrollmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('enrollments', function (Blueprint $table) {
-	    $table->increments('enrollid');
-            $table->string('studentid');
-	    $table->string('subjectid');
+        Schema::create('instructor_infos', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
         });
     }
@@ -28,8 +26,6 @@ class CreateEnrollmentsTable extends Migration
      */
     public function down()
     {
-	DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('enrollments');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::dropIfExists('instructor_infos');
     }
 }

@@ -1,3 +1,4 @@
+<nav aria-label="breadcrumb">
 <ol class="breadcrumb">
     <li class="breadcrumb-item active" aria-current="page"><a href="{{ url("/") }}"><i class="fa fa-fw fa-home"></i>&nbsp;Home</a></li>
     @if(!$disable)
@@ -19,3 +20,4 @@
         @endfor
     @endif
 </ol>
+</nav>

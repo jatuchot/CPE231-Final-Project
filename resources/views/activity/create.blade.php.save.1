@@ -113,12 +113,12 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
     <label class="custom-file-label" for="file">Choose file</label>
   </div>
 </div>
-<p class="help-block">First row of .PDF file must be header of the file.</p>
+<p class="help-block">Click the input field to browse the file.</p>
 						<center>
 						<button type="submit" action"{{url('/activity/create')}}" class="btn btn-primary">Submit</button>
 						</center><br><br><hr>
 </form>	
-<table border="0" width="100%" class="table table-bordered table-hover table-condensed table-responsive table-striped">
+<table border="0" width="100%" class="table table-bordered table-hover table-condensed table-responsive-sm table-striped">
   <tr>
     <th > <div align="center">No.</div></th>
      <th > <div align="center">ACTIVITY NAME</div></th>

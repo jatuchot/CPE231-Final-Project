@@ -13,19 +13,27 @@ if($recentUser->role != "4"){
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
 <title>CRS - @yield('title', 'Page')</title>
 <link rel="icon" type="image/png" href="/img/logo-cpe.png"/>
-<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/material.min.css">
+<link href="/css/sidebar2.css" rel="stylesheet" >
+<link href="/css/web.css" rel="stylesheet">
+<link href="/css/circle-profile.css" rel="stylesheet">
+<link href="/css/2bapp_back.css" rel="stylesheet">
+<link href="/css/gly.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/web.css">
 <link rel="stylesheet" href="/css/sticky2.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/material.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <style>
@@ -41,85 +49,97 @@ body{
 
 
 <body>
+<div class="wrapper">
+            <!-- Sidebar Holder -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <h3><img src="/img/cpe2.png" width="100%" class="sidebarImg"></h3>
+                    <strong><img src="/img/logo-cpe.png" width="50px" class="showImg"></strong>
+                </div>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #c58ec3;">
-<div class="container-fluid">
-  <a class="navbar-brand" href="/"><img src="/img/cpe2.png" style="width:265px; height:41px; "></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="/">
+                            <i class="fa fa-tachometer"></i>
+                           Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/showInfo">
+                            <i class="glyphicon glyphicon-briefcase"></i>
+                            List Student
+                        </a>
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                            <i class="fa fa-laptop"></i>
+                            Enrollment
+                        </a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu">
+                            <li><a href="/enroll/viewall">Course List</a></li>
+                            <li><a href="/enroll/regis">Regis Course</a></li>
+			    <li><a href="/tools/data-importer">Add Course</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-link"></i>
+                            Portfolio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-paperclip"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="glyphicon glyphicon-send"></i>
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+		<ul class="list-unstyled components2">
+		<li><center>
+                        <a href="/logout">
+                            <i class="fa fa-sign-out"></i>
+                            Logout
+                        </a></center>
+                    </li>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/showInfo">Manage Freshmen</a>
-      </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Education
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/tools/data-importer">Add Subject</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/enroll/viewall">Check Course</a>
-          <a class="dropdown-item" href="/">Enrollment</a>
-          <a class="dropdown-item" href="/">GradeResult</a>
+		</ul>
+            </nav>
+
+            <!-- Page Content Holder -->
+	    <div id="main-page">
+	    <div id="content">
+		<div class="container-fiuld col-sm-12">
+			<button type="button" id="sidebarCollapse" class="navbar-btn">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                        </button>
+			<br>
+			@if (trim($__env->yieldContent('breadcrumb')))
+                        	<?php $disable = true; ?>
+                    	@else
+                        	<?php $disable = false;?>
+                    	@endif
+                    	@include('components.breadcrumb', ['disable' => $disable])
+			@yield('content')
+			<br>
+		</div>
+                </div>
+	    </div>
+	<div class="push"></div>
         </div>
-      </li>
-
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Activity
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/activity/create">Create Activity</a>
-          <div class="dropdown-divider"></div>
-	  <a class="dropdown-item" href="/showActivity">List Activity</a>
-          <a class="dropdown-item" href="/activity/approve">Permit Activity</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           @if($recentUser->role == 4)
-	   Administrator
-           @else
-	   {{ $user['student_id'] }}
-	   @endif
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/#">Edit Profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/logout">Logout</a>
-        </div>
-      </li>
-    </ul>
-  </div>
-</div>
-</nav>
-
-<div class="container">
-   <div class="row">
-   <div class="col-sm-12">
-   
-   @if (trim($__env->yieldContent('breadcrumb')))
-                        <?php $disable = true; ?>
-                    @else
-                        <?php $disable = false;?>
-                    @endif
-                    @include('components.breadcrumb', ['disable' => $disable])
-
-   </div>
-   </div>
-   
-   <div class="row">
-   <div class="col-12">
-   <div class="card">
-	@yield('content')
-   </div>
-   </div>
-   </div>
-<div class="push"></div>
-</div>
+<script type="text/javascript">
+             $(document).ready(function () {
+                 $('#sidebarCollapse').on('click', function () {
+                     $('#sidebar').toggleClass('active');
+			$('#sidebarImg,#showImg').toggle();
+                 });
+             });
+         </script>
 @include('components.footer')
 </body>
 </html>
