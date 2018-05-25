@@ -1,5 +1,4 @@
 <?php
-
 $i = 0;
 ?>
 @extends('layouts.app')
@@ -47,10 +46,10 @@ $subject = DB::table('subject_info')
 		->get();
 
 $check = DB::table('enrollments')
-		->join('student_info','enrollments.studentid','=','student_info.user_id')
 		->join('subject_info','enrollments.subjectid','=','subject_info.id')
+		->join('student_info','enrollments.studentid','=','student_info.user_id')
 		->select('subject_info.*')
-		->where('user_id','=',$user->id)
+		->where('enrollments.studentid','=',$user->user_id)
 		->get();
 ?>
 
@@ -70,7 +69,7 @@ $check = DB::table('enrollments')
       </div>
       <div class="modal-body">
         <label>In this semester you can select only the course below.</label>
-        <form method="POST" action="/enroll/regis/{{ $user->user_id }}" enctype="multipart/form-data">
+        <form method="POST" action="/enroll/regis/" enctype="multipart/form-data">
 	{{csrf_field()}}
           <div class="form-group" id="boss">
 	    <table class="table table-bordered table-responsive-sm">

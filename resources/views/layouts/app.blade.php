@@ -80,9 +80,9 @@ body{
                         </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="/edit">
                             <i class="glyphicon glyphicon-link"></i>
-                            Portfolio
+                            Edit Profile
                         </a>
                     </li>
                     <li>

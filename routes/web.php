@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth']], function(){
             return view('enroll.regis');
         });
 	Route::post('/enroll/regis/{id}','EnrollmentController@store');
+	Route::get('/edit', 'EditProfileController@show');
+	Route::post('/edit/{id}','EditProfileController@update');
 	Route::get('/regis', function(){
 	    return view('regis');
 	})->name('regis');
