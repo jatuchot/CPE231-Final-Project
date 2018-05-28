@@ -1,20 +1,13 @@
-<?php $curUser = Auth::user()->username; ?> 
-<!DOCTYPE html> 
-<html> 
-<head> 
-<meta charset="UTF-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"> 
-</head> 
-<body> 
-<?php $user = App\StudentInfo::where("student_id",$curUser)->get()->first();
-?> 
+<?php 
+$curUser = Auth::user()->username;
+$user = App\StudentInfo::where("student_id",$curUser)->get()->first();
+?>
+@extends('layouts.app3')
+@section('title','First Time Registration Portal')
+
+@section('content') 
 <div class="container-fluid"> {{csrf_field()}}
 <br>
-<div class="progress">
-  <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% : Success Insert Profile_data</div>
-  <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% : more to go </div>
-</div>
 <br><div class="card text-black bg-light border-danger mb-3">
 <center>
     <div class="card-header">
@@ -30,6 +23,7 @@
         <div class="btn-group">
             <button type="button" class="btn btn-success" id="confirmed"><i class="fa fa-check"></i> ใช้รูปนี้</button>
             <button type="button" class="btn btn-danger" id="reject"><i class="fa fa-times"></i> ถ่ายใหม่</button>
+	    <a href="/" class="btn btn-warning">No webcam</a>
         </div>
     </div>
     <div id="error" class="alert alert-danger" style="display: none;">มีปัญหาเกิดขึ้น</div>
@@ -112,6 +106,4 @@
         });
 
     </script>
-</body>
-</html>
-
+@endsection

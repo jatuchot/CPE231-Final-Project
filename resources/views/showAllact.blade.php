@@ -2,10 +2,11 @@
 $i = 0;
 ?>
 @extends('layouts.app')
-@section('title','UserInfo Portal')
+@section('title','ActivityInfo Portal')
 
 @section('content')
-<div class="card-header">
+<div class="card">
+<div class="card-header bg-light">
    @include('components.title', [
         "title" => "Show All Activity",
         "desc" => "Use for show information of All created activity"
@@ -76,5 +77,6 @@ border: 1px solid #ccc;
    
 </table>
 <br><hr>
+</div>
 </div>
 @endsection

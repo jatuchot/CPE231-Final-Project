@@ -3,7 +3,8 @@
 @section('title', 'Data Importer')
 
 @section('content')
-<div class="card-header">
+<div class="card">
+<div class="card-header bg-light">
     @include('components.title', [
         "title" => "CSV File Data Importer",
         "desc" => "For importing .csv file into MySQL table"
@@ -23,6 +24,7 @@
             <input type="file" class="form-control" name="file" id="file" accept=".csv">
             <p class="help-block">First row of .csv file must be header of the file.</p>
         </div>
+	<a href="https://drive.google.com/open?id=1n0XEoaMSwtf0dAjVdn-OTXSdt-M-cBYP" class="btn btn-info">Download .csv test file Here </a>
 	</div>
     </center>  
     <center>
@@ -35,6 +37,7 @@
         <input class="btn btn-primary" type="submit" value="Upload" name="submit">
 	<br><br></div></center>
     </form>
+</div>
 </div>
 @endsection
 

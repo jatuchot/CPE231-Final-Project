@@ -4,12 +4,21 @@ use App\StudentInfo;
 
 $curUser = Auth::user();
 $user = StudentInfo::where('user_id','=',$curUser->id)->first();
+if($curUser->role == 4 || $curUser->role == 5){
+     echo '<script type="text/javascript">';
+     echo 'setTimeout(function () { swal("WOW!","Message!","success");';
+     echo '}, 1000);</script>';
+     header("refresh:1; url=/");
+     return redirect()->route("home");
+}
+
 ?>
 @extends('layouts.app')
 @section('title','Activity Portal')
 
 @section('content')
-<div class="card-header">
+<div class="card">
+<div class="card-header bg-light">
    @include('components.title', [
 	"title" => "Create Activity Page",
 	"desc" => "Use for submit activity and delete activity"
@@ -24,18 +33,8 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
           </ul>
           </div><br>
       @endif
-      @if (isset($withSuccess))
-<script>
-	  swal({
-  title: "ส่งข้อมูลเรียบร้อยแล้ว!",
-  text: "Your information has been submitted.",
-  icon: "success",
-  button: "OK! :)",
-});
-</script>
-      @endif
 <div class="card-body">
-				<form class="form-horizontal" method="post" action="{{ url('activity/store') }}" enctype="multipart/form-data">
+				<form class="form-horizontal" id="create" method="post" action="{{ url('activity/store') }}" enctype="multipart/form-data">
 					{{csrf_field()}}
 						<div class="form-group">
 						<div class="col-sm-12">
@@ -48,15 +47,15 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
                                                 <div class="col-sm-12">
 						<label for="participant">Participant :&emsp; </label>
 						<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="c1">
+  <input name="participant[]" type="checkbox" class="custom-control-input" id="c1" value="1">
   <label class="custom-control-label" for="c1">First Year Student</label>
 </div>
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="c2">
+  <input name="participant[]" type="checkbox" class="custom-control-input" id="c2" value="2">
   <label class="custom-control-label" for="c2">Second Year Student</label>
 </div>
 <div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="c3">
+  <input name="participant[]" type="checkbox" class="custom-control-input" id="c3" value="3">
   <label class="custom-control-label" for="c3">Third Year Student</label>
 </div>
 						</div></div>
@@ -108,17 +107,18 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
   <div class="input-group-prepend">
     <span class="input-group-text">.PDF File:</span>
   </div>
-  <div class="custom-file">
-    <input type="file" class="custom-file-input" id="file" name="file" accept=".pdf">
-    <label class="custom-file-label" for="file">Choose file</label>
-  </div>
+  <div class="form-group">
+            <label for="table_name">Insert to:</label>
+	    <input type="file" name="file" id="file" accept=".pdf">
+        </div>
 </div>
 <p class="help-block">First row of .PDF file must be header of the file.</p>
 						<center>
-						<button type="submit" action"{{url('/activity/create')}}" class="btn btn-primary">Submit</button>
+						<button action"{{url('/activity/create')}}" class="btn btn-primary" id="makesure">Submit</button>
 						</center><br><br><hr>
 </form>	
-<table border="0" width="100%" class="table table-bordered table-hover table-condensed table-responsive table-striped">
+<div class="table-responsive">
+<table border="0" width="100%" class="table table-bordered table-hover table-condensed table-striped">
   <tr>
     <th > <div align="center">No.</div></th>
      <th > <div align="center">ACTIVITY NAME</div></th>
@@ -154,7 +154,7 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
     </center></td>
     <td><center>
     @if($a['PDF_filename'] != "NULL")
-            <a href="http://docs.google.com/gview?url=https://dev.bosscpe30.info/download/pdf/{{ $a['PDF_filename'] }}" target="_blank"><button class="btn btn-success">Download</button></a>
+            <a href="http://docs.google.com/gview?url=https://dev.bosscpe30.info/download/pdf/{{ $a['PDF_filename'] }}" target="_blank" class="btn btn-success">Download</a>
     @else
 	No
     @endif
@@ -167,7 +167,7 @@ $user = StudentInfo::where('user_id','=',$curUser->id)->first();
     <td><center>
     <form id="delete" action="/activity/delete/{{ $a['id'] }}" method="post">
             {{csrf_field()}}
-            <button class="btn btn-primary" id="makesure" onclick="return makeSure();">GO!</button>
+            <button class="btn btn-primary" type="submit">GO!</button>
     </form>
     </center></td>
 </tr>
@@ -176,6 +176,7 @@ $i = $i + 1; ?>
 @endif
 @endforeach
 </table>
+</div>
 <?php
                 if($i >= 2){
                         echo "You had created " . $i . " Activities";
@@ -184,29 +185,24 @@ $i = $i + 1; ?>
                         echo "You had created " . $i . " Activity";
                 }
         ?>
-</div>
+</div></div><div class="push"></div>
 <script>
-function makeSure(){
-    swal(
-    {
-        title: "Are you sure?",
-        text: "You will not be able to recover your activity data!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Yes",
-        showLoaderOnConfirm: true,
-        closeOnConfirm: false
-        },
-        function(isConfirm){
-            if(isConfirm) { 
-	        $('#delete').submit();
-		return true;
-            }
-	    return false;
-        }
-    );
-}
+$(document).ready(function () {
+    $('#makesure').click(function() {
+      checked = $("input[type=checkbox]:checked").length;
+
+      if(!checked) {
+	swal("Oops!", "You must check at least one checkbox.!", "error");
+        //alert()->error('Oops..','You must check at least one checkbox.');
+        return false;
+      }
+      else if(checked){
+	$("create").submit();
+      }
+    });
+});
+
+</script>
 </script>
 <script src="/js/createAct.js"></script>
 <script src="/js/pickdate.js"></script>

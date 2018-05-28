@@ -3,7 +3,8 @@
 @section('title', 'Data Importer')
 
 @section('content')
-<div class="card-header">
+<div class="card">
+<div class="card-header bg-light">
     @include('components.title', [
         "title" => "CSV File Data Importer",
         "desc" => "For importing .csv file into MySQL table"
@@ -33,6 +34,7 @@
     <p>Every wrong column name will be rejected.</p>
     <input class="btn btn-primary" type="submit" value="Submit" name="submit">
     </form>
+</div>
 </div>
 @endsection
 

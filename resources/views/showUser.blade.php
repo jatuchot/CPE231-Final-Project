@@ -5,7 +5,8 @@ $i = 0;
 @section('title','UserInfo Portal')
 
 @section('content')
-   <div class="card-header">
+<div class="card">
+   <div class="card-header bg-light">
    @include('components.title', [
         "title" => "Show All information",
         "desc" => "Use for show information of All Student"
@@ -75,5 +76,6 @@ border: 1px solid #ccc;
 			echo "Student in our record is " . $i . " person";
 		}
 	?>
+</div>
 </div>
 @endsection

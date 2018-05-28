@@ -20,7 +20,7 @@ class CreateGradeResultsTable extends Migration
             $table->foreign('student_id')->unique()->references('student_id')->on('student_info');
 	    $table->integer('enrollid')->unsigned()->nullable()->default(NULL);
             $table->foreign('enrollid')->unique()->references('enrollid')->on('enrollments');
-	    $table->string('grade','1');
+	    $table->string('grade','2');
             $table->timestamps();
         });
     }

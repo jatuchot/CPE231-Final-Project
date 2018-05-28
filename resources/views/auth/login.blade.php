@@ -5,10 +5,11 @@
 <title>CPE231 :: CPERegistration-LoginPage</title>
    <link href="/css/sticky_back.css" rel="stylesheet">
     <link href="/css/login2_back.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
     <link rel="stylesheet" type="text/css" href="css/font-awesome/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
 </head>
 <body>
 <style>
@@ -97,10 +98,10 @@ hr {
             <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}"></div>
             <input type="text" name="username" value="{{ old('username') }}" placeholder="StudentID" autofocus required/>
       <i class="fa fa-user"></i>
-      <input type="password" name="password" placeholder="Password">
+      <input type="password" name="password" placeholder="Password" required>
       <i class="fa fa-key"></i>
 
-    <button>
+    <button onclick="submitform()">
       <i class="spinner"></i>
       <span class="state" style="font-family: cloud;font-size: 16px;"><i class="fa fa-fw fa-check"></i>&nbsp;Submit</span>
     </button>
@@ -114,6 +115,11 @@ hr {
                     swal("Oops..",print,"error");
   		</script>
   @endif
+  <script>
+   function submitform(){
+		document.getElementById("login2").submit();
+   }
+  </script>
 
         <!-- Remind Passowrd -->
 

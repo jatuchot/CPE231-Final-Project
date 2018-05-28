@@ -13,6 +13,8 @@ class CreateSubjectInfosTable extends Migration
      */
     public function up()
     {
+	DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+
         Schema::create('subject_info', function (Blueprint $table) {
 	    $table->increments('id');
             $table->string('subject_id');
@@ -23,7 +25,11 @@ class CreateSubjectInfosTable extends Migration
 	    $table->time('start_from');
 	    $table->time('end_at');
 	    $table->string('roomid');
-	    $table->string('instructor');
+	    $table->integer('instructor')->unsigned()->nullable()->default(NULL);
+            $table->foreign('instructor')->unique()->references('id')->on('teacher_info');  
+	    $table->string('section');
+	    $table->string('term');
+	    $table->timestamps();
         });
     }
 

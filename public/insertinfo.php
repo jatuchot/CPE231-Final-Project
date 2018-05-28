@@ -49,7 +49,7 @@ mysqli_close($con);
           closeOnEsc: false,
 
         }).then(resp => {
-          window.location.href = "/upload/imageprofile";
+          window.location.href = "/school/info";
         })
     </script>
 </body>

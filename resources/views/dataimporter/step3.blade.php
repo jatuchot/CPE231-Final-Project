@@ -3,7 +3,8 @@
 @section('title', 'Data Importer')
 
 @section('content')
-<div class="card-header">
+<div class="card">
+<div class="card-header bg-light">
     @include('components.title', [
         "title" => "CSV File Data Importer",
         "desc" => "For importing .csv file into MySQL table"
@@ -30,6 +31,7 @@
             @endfor
         </table>
     </div>
+</div>
 </div>
 @endsection
 

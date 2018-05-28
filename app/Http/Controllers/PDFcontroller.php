@@ -10,7 +10,7 @@ class PDFcontroller extends Controller
 {
     public function download($PDF_filename){
 
-        $path = 'uploads/abstact-pdf/' . $PDF_filename;
+        $path = 'uploads/activity-pdf/' . $PDF_filename;
 
         if( ! Storage::exists($path) ) return;
 

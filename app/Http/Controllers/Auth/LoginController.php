@@ -34,9 +34,13 @@ class LoginController extends Controller
      *
      * @return void
      */
+    public function username()
+    {
+        return 'username';
+    }
     protected function authenticated(Request $request, $user)
     {
-        $request->session()->flash('success', 'Login Successfully');
+	$request->session()->flash('success', 'Login Successfully');
         return redirect()->intended($this->redirectPath());
     }
     public function __construct()

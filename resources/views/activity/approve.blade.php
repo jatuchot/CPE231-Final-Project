@@ -1,11 +1,21 @@
 <?php
 $i = 0;
+$recentUser = Auth::user();
+if($recentUser->role == 1 || $recentUser->role == 2 || $recentUser->role == 3){
+     echo '<script type="text/javascript">';
+     echo 'setTimeout(function () { swal("WOW!","Message!","success");';
+     echo '}, 1000);</script>';
+     header("refresh:1; url=/");
+     return redirect()->route("home");
+}
+
 ?>
 @extends('layouts.app')
 @section('title','Activity Portal')
 
 @section('content')
-   <div class="card-header">
+<div class="card">
+   <div class="card-header bg-light">
    @include('components.title', [
         "title" => "Permition for Activity Page",
         "desc" => "Use for approve activity and deny activity"
@@ -17,6 +27,7 @@ border: 1px solid #ccc;
 }
 
 </style>
+
 @if ($errors->any())
           <div class="alert alert-danger" role="alert">
           <ul>
@@ -95,5 +106,5 @@ $i = $i + 1; ?>
 			echo "You had created " . $i . " Activity";
 		}
 	?>
-</div></div>
+</div></div></div>
 @endsection

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Alert;
 use App\ActivityInfo;
 use App\StudentInfo;
+use App\Activities;
 use Storage;
 
 class ActivityController extends Controller
@@ -18,6 +20,22 @@ class ActivityController extends Controller
     public function index()
     {
         //
+    }
+    public function showGive(){
+	return view('activity.select');
+    }
+    public function showGive1($id){
+        return view('activity.register',['id'=>$id]);
+    }
+
+    public function give(Request $request,$id){
+	$actid = $request->input('actid');
+	$act = Activities::updateOrCreate([
+		'act_id' => $actid,
+		'user_id' => $id
+	]);
+	alert()->success('Success','Your participant got hours!.')->persistent("OK");
+	return redirect('tools/activity');
     }
 
     /**
@@ -74,8 +92,8 @@ class ActivityController extends Controller
 		'PDF_filename' => $actFile
             ]);
 	    }
-	    return view('activity.create' ,[
-                'withSuccess' =>true,
+	    alert()->success('Success','Your Request has been sent!.')->persistent("OK");
+	    return redirect('activity/create')->with([
                 'PDFuploaded' => $actFile
             ]);
         }
@@ -92,7 +110,8 @@ class ActivityController extends Controller
                 'endAt' => $end
             ]);
             }
-	   return view('activity.create', [ 'withSuccess' => true ]);
+	   alert()->success('Success','Your Request has been sent!.')->persistent("OK");
+	   return redirect('activity/create');
 	}
     }
 
@@ -148,6 +167,7 @@ class ActivityController extends Controller
     public function destroy($id)
     {
         ActivityInfo::where('id',$id)->delete();
-	return redirect('activity/create')->with('success','Activity has been deleted');
+        alert()->success('Success','Activity has been deleted!')->persistent("OK");
+	return redirect('activity/create');
     }
 }

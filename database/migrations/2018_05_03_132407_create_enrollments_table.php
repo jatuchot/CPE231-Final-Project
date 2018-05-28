@@ -13,10 +13,14 @@ class CreateEnrollmentsTable extends Migration
      */
     public function up()
     {
+//	DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::create('enrollments', function (Blueprint $table) {
 	    $table->increments('enrollid');
-            $table->string('studentid');
-	    $table->string('subjectid');
+            $table->string('studentid')->nullable()->default(NULL);
+	    $table->foreign('studentid')->unique()->references('student_id')->on('student_info');
+	    $table->integer('subjectid')->unsigned()->nullable()->default(NULL);
+	    $table->foreign('subjectid')->unique()->references('id')->on('subject_info');
+	    $table->string('term');
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ class CreateEnrollmentsTable extends Migration
     {
 	DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('enrollments');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+	DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

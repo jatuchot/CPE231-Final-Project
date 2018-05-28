@@ -1,11 +1,21 @@
 <?php
 $i = 0;
+$curUser = Auth::user();
+if($curUser->role == 4 || $curUser->role == 5){
+     echo '<script type="text/javascript">';
+     echo 'setTimeout(function () { swal("WOW!","Message!","success");';
+     echo '}, 1000);</script>';
+     header("refresh:1; url=/");
+     return redirect()->route("home");
+}
 ?>
+
 @extends('layouts.app')
 @section('title','Enrollment Portal')
 
 @section('content')
-   <div class="card-header">
+<div class="card">
+   <div class="card-header bg-light">
    @include('components.title', [
         "title" => "Enrollment page",
         "desc" => "Use for enrollment the course"
@@ -27,7 +37,6 @@ border: 1px solid #ccc;
 }
 </style>
 <?php
-$curUser = Auth::user();
 $user = App\StudentInfo::where('user_id','=',$curUser->id)->first();
 /* $subject = DB::table('subject')
 		->join('subject_dates','subject.date_id','=', 'subject_dates.id')
@@ -36,20 +45,29 @@ $user = App\StudentInfo::where('user_id','=',$curUser->id)->first();
 		->where('foryear','=',$curUser)
 		->get();
 */
+$year = date("Y");
+$month = date("m");
+$value = 0;
+if($month > 8){
+   $value = 1;
+}
+else if($month >=1 && $month < 6){
+   $value = 2;
+}
+$t = $value."/".$year;
+
 $subject = DB::table('subject_info')
-		->whereNotExists(function ($query) {
-			$query->select(DB::raw(1))
-				->from('enrollments')
-				->whereRaw('enrollments.subjectid = subject_info.id');
-		})
 		->where('foryear','=',$curUser->role)
+		->where('term','=',$value)
+		->orderBy('subject_id','asc')
 		->get();
 
 $check = DB::table('enrollments')
 		->join('subject_info','enrollments.subjectid','=','subject_info.id')
-		->join('student_info','enrollments.studentid','=','student_info.user_id')
+		->join('student_info','enrollments.studentid','=','student_info.student_id')
 		->select('subject_info.*')
-		->where('enrollments.studentid','=',$user->user_id)
+		->where('enrollments.studentid','=',$user->student_id)
+		->where('enrollments.term','=',$t)
 		->get();
 ?>
 
@@ -68,11 +86,13 @@ $check = DB::table('enrollments')
         </button>
       </div>
       <div class="modal-body">
-        <label>In this semester you can select only the course below.</label>
-        <form method="POST" action="/enroll/regis/" enctype="multipart/form-data">
+        <label>In this semester you can select only the course below. {{ $year }} {{ $month }} {{ $value }}</label>
+        <form method="POST" action="/enroll/regis/{{ $user->id }}" enctype="multipart/form-data">
 	{{csrf_field()}}
+	<input type="hidden" name="term" value="{{ $value }}/{{ $year }}">
           <div class="form-group" id="boss">
-	    <table class="table table-bordered table-responsive-sm">
+<div class="table-responsive-sm">
+	    <table class="table table-bordered">
 <thead>
 <tr>
   <th>No</th>
@@ -89,7 +109,7 @@ $check = DB::table('enrollments')
   @foreach($subject as $s2)
   <tr>
   <td>{{ $s2->id }} </td>
-  <td>{{ $s2->subject_id }}</td>
+  <td>{{ $s2->subject_id }} Sec:{{ $s2->section }}</td>
   <td>{{ $s2->subject_name }} (credit: {{ $s2->credit }})</td>
   <td>{{ $s2->day }}</td>
   <td>{{ date('H:i',strtotime($s2->start_from)) }}-{{ date('H:i',strtotime($s2->end_at)) }}</td>
@@ -103,6 +123,7 @@ $check = DB::table('enrollments')
 
 
 </table>
+</div>
 </div>
 </div>
       <div class="modal-footer">
@@ -122,6 +143,7 @@ $check = DB::table('enrollments')
   <th>No</th>
   <th>Subject ID</th>
   <th>Subject Name</th>
+  <th>Section</th>
   <th>Date</th>
   <th>Time</th>
   <th>Room</th>
@@ -133,6 +155,7 @@ $check = DB::table('enrollments')
   <td>{{ $s1->id }} </td>
   <td>{{ $s1->subject_id }}</td>
   <td>{{ $s1->subject_name }} (credit: {{ $s1->credit }})</td>
+  <td>{{ $s1->section }} </td>
   <td>{{ $s1->day }}</td>
   <td>{{ date('H:i',strtotime($s1->start_from)) }}-{{ date('H:i',strtotime($s1->end_at)) }}</td>
   <td>{{ $s1->roomid }}</td>
@@ -143,6 +166,7 @@ $check = DB::table('enrollments')
 <br>
 <p>
 </p>
+</div>
 </div>
 <script>
 /*

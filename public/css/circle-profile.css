@@ -5,24 +5,44 @@
 .img-circle {
     border-radius: 50%;
 }
-.img-circle {
-    border-radius: 0;
-}
 
 .ratio {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
     height: 0;
-    padding-bottom: 80%;
+    padding-bottom: 70%;
     position: relation;
     z-index: 1;
     width: 80%;
 }
 .img-circle {
+    padding-left: 35px;
+    padding-top: 15px;
     border-radius: 50%;
 }
 .img-responsive {
     display: block;
     max-width: 80%;
+}
+
+
+
+@media (max-width: 768px) {
+   .img-circle {
+    padding-left: 17px;
+    padding-top: 15px;
+    border-radius: 50%;
+   }
+   .ratio {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 0;
+    padding-bottom: 70%;
+    position: relation;
+    z-index: 1;
+    width: 80%;
+}
+
 }

@@ -2,7 +2,8 @@
 @section('title','Enrollment Portal')
 
 @section('content')
-   <div class="card-header">
+<div class="card">
+   <div class="card-header bg-light">
    @include('components.title', [
         "title" => "Show All Open Course",
         "desc" => "This page is showing all of the course that open in this semester"
@@ -51,6 +52,7 @@ border: 1px solid #ccc;
     <th > <div align="center">DAY</div></th>
     <th > <div align="center">TIME</div></th>
     <th> <div align="center">CREDIT</div></th>
+    <th> <div align="center">SEC</div></th>
     <th> <div align="center">ROOM</div></th>
     <th> <div align="center">INSTRUCTOR</div></th>
      
@@ -58,30 +60,44 @@ border: 1px solid #ccc;
   </tr>
 </thead>
   <?php 
+  $year = date('Y');
+        $month = date('m');
+        $term = 0;
+        if($month >= 8){
+            $term = 1;
+        }
+        else if($month >=1 && $month < 8){
+            $term = 2;
+        }
+
   $i = 1;
-  use App\SubjectInfo;
-  $course = SubjectInfo::get();
+  $course = DB::table('subject_info')
+		->join('teacher_info','subject_info.instructor','=','teacher_info.id')
+		->where('term','=',$term)
+		->orderBy('foryear')
+		->get();
   ?>
 @foreach($course as $a)
 <tbody id="course">
   <tr>
     <td><center>{{ $i }}</center></td>
-    <td><center>{{ $a['subject_id'] }}</center></td>
-    <td><center>{{ $a['subject_name'] }}</center></td>
+    <td><center>{{ $a->subject_id }}</center></td>
+    <td><center>{{ $a->subject_name }}</center></td>
     <td><center>
-    @if($a['foryear'] == 1)
+    @if($a->foryear == 1)
     First Year
-    @elseif($a['foryear'] == 2)
+    @elseif($a->foryear == 2)
     Second Year
-    @elseif($a['foryear'] == 3)
+    @elseif($a->foryear == 3)
     Thrid Year
     @endif
     </center></td>
-    <td><center>{{ $a['day']}}</center></td>
-    <td><center>{{ $a['start_from'] }}-{{ $a['end_at'] }}</center></td>
-    <td><center>{{ $a['credit'] }}</center></td>
-    <td><center>{{ $a['roomid'] }}</center></td>
-    <td><center>{{ $a['instructor'] }}</center></td>
+    <td><center>{{ $a->day}}</center></td>
+    <td><center>{{ date('H:i',strtotime($a->start_from)) }}-{{ date('H:i',strtotime($a->end_at)) }}</center></td>
+    <td><center>{{ $a->credit }} </center></td>
+    <td><center>{{ $a->section }}</center></td>
+    <td><center>{{ $a->roomid }}</center></td>
+    <td><center>{{ $a->Firstname }} {{ $a->Lastname }}</center></td>
 </tr>
 <?php
    $i = $i + 1;
@@ -91,7 +107,7 @@ border: 1px solid #ccc;
 </table>
 <br><hr>
 </div>
-
+</div>
 <script>
 var count = 0;
 $(document).ready(function(){
